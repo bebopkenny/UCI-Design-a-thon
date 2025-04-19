@@ -1,17 +1,32 @@
 'use client'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import GlobeComponent from '@/components/GlobeComponent'
 import RightSidebar from '@/components/RightSidebar'
 import LeftSidebar from '@/components/LeftSidebar'
+import { fetchEarth, Earthquake } from '@/lib/fetchEarthquakes'
+import { fetchWildfires, Wildfires } from '@/lib/fetchWildfires'
 
 const GlobePage = () => {
+  const [selectedHazard, setSelectedHazard] = useState<'earthquakes' | 'wildfires' | 'tsunamis' | 'tornados'>('earthquakes')
+  const [earthquakeData, setEarthquakeData] = useState<Earthquake[]>([])
+  const [wildfireData, setWildfireData] = useState<Wildfires[]>([])
+
+  useEffect(() => {
+    fetchEarth().then(setEarthquakeData)
+    fetchWildfires().then(setWildfireData)
+  }, [])
+
   return (
     <main className="flex h-screen w-screen overflow-hidden bg-black">
-      <LeftSidebar />
-      <div className="flex-1 flex justify-center items-center">  
-        <GlobeComponent />
+      <LeftSidebar selected={selectedHazard} setSelected={setSelectedHazard} />
+      <div className="flex-1 flex justify-center items-center">
+        <GlobeComponent
+          selectedHazard={selectedHazard}
+          earthquakeData={earthquakeData}
+          wildfireData={wildfireData}
+        />
       </div>
-      <RightSidebar />
+      <RightSidebar selectedHazard={selectedHazard} />
     </main>
   )
 }

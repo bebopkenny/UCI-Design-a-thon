@@ -1,11 +1,14 @@
 'use client'
 import React, { useState } from 'react'
 
-const LeftSidebar = () => {
-  const [selected, setSelected] = useState<string | null>('earthquakes')
+interface Props {
+  selected: 'earthquakes' | 'wildfires' | 'tsunamis' | 'tornados';
+  setSelected: (hazard: 'earthquakes' | 'wildfires' | 'tsunamis' | 'tornados') => void;
+}
 
+const LeftSidebar: React.FC<Props> = ({selected, setSelected}) => { 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setSelected(e.target.value)
+    setSelected(e.target.value as Props['selected'])
   }
 
   return (
