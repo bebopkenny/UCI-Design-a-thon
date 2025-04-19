@@ -1,15 +1,15 @@
-import { useEffect } from "react"
-
 export type Earthquake ={
-    id: string 
+    id: string; 
     geometry: {
-        coordinates: [number, number, number]
-    }
+        coordinates: [number, number, number];
+    };
 
     properties: {
-        mag: number 
-        title: string 
-        time: number
+        mag: number; 
+        title: string; 
+        time: number;
+        alert?: 'green' | 'yellow' | 'orange' | 'red';
+        status: 'automatic' | 'reviewed';
     }
 }
 

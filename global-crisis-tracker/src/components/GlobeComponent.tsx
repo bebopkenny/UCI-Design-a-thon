@@ -4,6 +4,8 @@ import React, { useEffect, useState } from 'react'
 import { fetchEarth, Earthquake } from '@/lib/fetchEarthquakes'
 
 const GlobeComponent = () => {
+
+
     const [quakeData, setQuakeData] = useState<Earthquake[]>([])
 
     useEffect(() => {
@@ -34,12 +36,23 @@ const GlobeComponent = () => {
             globeImageUrl="//unpkg.com/three-globe/example/img/earth-night.jpg"
             backgroundImageUrl="//unpkg.com/three-globe/example/img/night-sky.png"
             pointsData={quakeData}
-            pointLat={d => (d as Earthquake).geometry.coordinates[1]}
-            pointLng={d => (d as Earthquake).geometry.coordinates[0]}
-            pointAltitude={d => (d as Earthquake).properties.mag * 0.09}
-            pointColor={() => 'red'}
-            pointRadius={0.3}
-            pointLabel={d => `${(d as Earthquake).properties.title} (Mag ${(d as Earthquake).properties.mag})`}
+            pointLat={(d) => (d as Earthquake).geometry.coordinates[1]}
+            pointLng={(d) => (d as Earthquake).geometry.coordinates[0]}
+            pointAltitude={() => 0.01}
+            pointRadius={0.1}
+            pointColor={() => 'transparent'}
+            pointLabel={(d) =>
+              `${(d as Earthquake).properties.title} (Mag ${(d as Earthquake).properties.mag})`
+            }
+          
+            ringsData={quakeData}
+            ringLat={(d) => (d as Earthquake).geometry.coordinates[1]}
+            ringLng={(d) => (d as Earthquake).geometry.coordinates[0]}
+            ringAltitude={0}
+            ringColor={() => (t: number) => `rgba(255,100,50,${Math.sqrt(1 - t)})`}
+            ringMaxRadius={(d) => (d as Earthquake).properties.mag * 5}
+            ringPropagationSpeed={1}
+            ringRepeatPeriod={700}
         />
     </>
   )
