@@ -7,11 +7,11 @@ import LeftSidebar from '@/components/LeftSidebar'
 const GlobePage = () => {
   return (
     <main className="flex h-screen w-screen overflow-hidden bg-black">
-      <div className="flex-1">  
+      <LeftSidebar />
+      <div className="flex-1 flex justify-center items-center">  
         <GlobeComponent />
       </div>
       <RightSidebar />
-      <LeftSidebar />
     </main>
   )
 }
