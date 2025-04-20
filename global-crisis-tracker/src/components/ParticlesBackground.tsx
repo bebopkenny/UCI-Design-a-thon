@@ -3,7 +3,7 @@
 import React, { useCallback } from 'react';
 import Particles from 'react-tsparticles';
 import { Engine } from 'tsparticles-engine';
-import { loadSlim } from 'tsparticles-slim'; // Load lighter version
+import { loadSlim } from 'tsparticles-slim'; 
 import './ParticlesBackground.css';
 
 const ParticlesBackground: React.FC = () => {

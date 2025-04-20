@@ -3,9 +3,13 @@
 :root {
   --background: transparent;
   --foreground: #ededed;
+  --font-title: var(--font-space);
 }
 
-/* Optional: keep dark mode variables if needed */
+h1, h2, h3, .title {
+  font-family: var(--font-title), sans-serif;
+}
+
 @media (prefers-color-scheme: dark) {
   :root {
     --background: transparent;
