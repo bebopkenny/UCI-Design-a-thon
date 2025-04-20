@@ -4,6 +4,7 @@ import { Earthquake } from '@/lib/fetchEarthquakes';
 import { Wildfires } from '@/lib/fetchWildfires';
 import { AirQuality } from '@/lib/fetchAirQuality';
 import { TsunamiDeposit } from '@/lib/fetchTsunamis';
+import { TornadoWarning } from '@/lib/fetchTornados';
 
 interface RightSidebarProps {
   selectedHazard: 'earthquakes' | 'wildfires' | 'tsunamis' | 'tornados';
@@ -11,6 +12,7 @@ interface RightSidebarProps {
   wildfireData: Wildfires[];
   tsunamiData: TsunamiDeposit[];
   airQuality: AirQuality | null;
+  tornadoData: TornadoWarning[];
 }
 
 const RightSidebar: React.FC<RightSidebarProps> = ({
@@ -18,18 +20,19 @@ const RightSidebar: React.FC<RightSidebarProps> = ({
   earthquakeData,
   wildfireData,
   tsunamiData,
-  airQuality
+  airQuality,
+  tornadoData
 }) => {
   return (
-    <aside className="w-[300px] h-screen bg-transparent text-white p-6 overflow-y-auto font-[var(--font-geist-sans)]">
+    <aside className="w-[300px] h-screen bg-black bg-opacity-60 text-white p-6 overflow-y-auto border-l border-white font-sans">
       {selectedHazard === 'earthquakes' && (
         <>
           <h2 className="text-xl font-bold mb-2">Earthquake Stats</h2>
-          <p className="text-sm">Total Quakes: {earthquakeData.length}</p>
+          <p>Total Quakes: {earthquakeData.length}</p>
           <h3 className="mt-6 font-semibold">Recent Earthquakes</h3>
-          <ul className="text-sm space-y-2 mt-2">
+          <ul className="space-y-2 text-sm">
             {earthquakeData.slice(0, 5).map((item) => (
-              <li key={item.id}>
+              <li key={item.id} className="text-gray-300">
                 <strong>Mag {item.properties.mag.toFixed(1)}</strong> - {item.properties.title}<br />
                 Alert: {item.properties.alert || 'none'}<br />
                 Status: {item.properties.status}
@@ -42,10 +45,10 @@ const RightSidebar: React.FC<RightSidebarProps> = ({
       {selectedHazard === 'wildfires' && (
         <>
           <h2 className="text-xl font-bold mb-2">Wildfire Stats</h2>
-          <p className="text-sm">Total Fires: {wildfireData.length}</p>
-          <ul className="text-sm space-y-2 mt-2">
+          <p>Total Fires: {wildfireData.length}</p>
+          <ul className="space-y-2 text-sm">
             {wildfireData.slice(0, 5).map((fire, idx) => (
-              <li key={idx}>
+              <li key={idx} className="text-gray-300">
                 Lat: {fire.latitude}, Lng: {fire.longitude}<br />
                 Intensity: {fire.intensity}, Confidence: {fire.confidence}<br />
                 Type: {fire.type}
@@ -55,8 +58,8 @@ const RightSidebar: React.FC<RightSidebarProps> = ({
 
           {airQuality && (
             <>
-              <h2 className="mt-6 text-xl font-bold">Air Quality Stats</h2>
-              <ul className="text-sm space-y-1 mt-2">
+              <h2 className="mt-6 text-xl font-bold">Air Quality</h2>
+              <ul className="space-y-1 text-sm text-gray-300">
                 <li>AQI: {airQuality.aqi}</li>
                 <li>Category: {airQuality.category}</li>
                 <li>PM2.5: {airQuality.pm25} µg/m³</li>
@@ -72,9 +75,9 @@ const RightSidebar: React.FC<RightSidebarProps> = ({
       {selectedHazard === 'tsunamis' && (
         <>
           <h2 className="text-xl font-bold mb-2">Tsunami Stats</h2>
-          <p className="text-sm">Total Deposits: {tsunamiData.length}</p>
+          <p>Total Deposits: {tsunamiData.length}</p>
           <h3 className="mt-6 font-semibold">Recent Tsunami Deposits</h3>
-          <ul className="space-y-2 text-sm mt-2">
+          <ul className="space-y-2 text-sm text-gray-300">
             {tsunamiData.slice(0, 5).map((tsunami, idx) => (
               <li key={idx}>
                 <strong>{tsunami.location}, {tsunami.country}</strong><br />
@@ -86,6 +89,23 @@ const RightSidebar: React.FC<RightSidebarProps> = ({
           </ul>
         </>
       )}
+
+{selectedHazard === 'tornados' && tornadoData.length > 0 && (
+  <>
+    <h2 className="text-xl font-bold mb-2">Tornado Warnings</h2>
+    <p>Total Warnings: {tornadoData.length}</p>
+    <ul className="space-y-2 text-sm text-gray-300">
+      {tornadoData.slice(0, 5).map((warning, idx) => (
+        <li key={idx}>
+          <strong>{warning.areaDesc}</strong><br />
+          Effective: {new Date(warning.effective).toLocaleString()}<br />
+          Expires: {new Date(warning.expires).toLocaleString()}<br />
+          Headline: {warning.headline}
+        </li>
+      ))}
+    </ul>
+  </>
+)}
     </aside>
   );
 };

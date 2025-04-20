@@ -8,6 +8,7 @@ import { fetchEarth, Earthquake } from '@/lib/fetchEarthquakes';
 import { fetchWildfires, Wildfires } from '@/lib/fetchWildfires';
 import { fetchAirQuality, AirQuality } from '@/lib/fetchAirQuality';
 import { fetchTsunamis, TsunamiDeposit } from '@/lib/fetchTsunamis';
+import { fetchTornados, TornadoWarning } from '@/lib/fetchTornados';
 
 const GlobePage = () => {
   const [selectedHazard, setSelectedHazard] = useState<'earthquakes' | 'wildfires' | 'tsunamis' | 'tornados'>('earthquakes');
@@ -16,10 +17,12 @@ const GlobePage = () => {
   const [wildfireData, setWildfireData] = useState<Wildfires[]>([]);
   const [tsunamiData, setTsunamiData] = useState<TsunamiDeposit[]>([]);
   const [airQuality, setAirQuality] = useState<AirQuality | null>(null);
+  const [tornadoData, setTornadoData] = useState<TornadoWarning[]>([]);
 
   const loadEarthquakes = () => fetchEarth().then(setEarthquakeData);
   const loadWildfires = () => fetchWildfires().then(setWildfireData);
   const loadTsunamis = () => fetchTsunamis().then(setTsunamiData);
+  const loadTornados = () => fetchTornados().then(setTornadoData);
   const loadAirQuality = () => fetchAirQuality(36.7783, -119.4179).then(setAirQuality);
 
   useEffect(() => {
@@ -27,6 +30,7 @@ const GlobePage = () => {
     loadWildfires();
     loadAirQuality();
     loadTsunamis();
+    loadTornados();
   }, []);
 
   useEffect(() => {
@@ -38,6 +42,9 @@ const GlobePage = () => {
     } else if (selectedHazard === 'tsunamis') {
       loadTsunamis();
     }
+      else if (selectedHazard === 'tornados') {
+        loadTornados();
+      }
   }, [selectedHazard]);
 
   return (
@@ -49,6 +56,7 @@ const GlobePage = () => {
           earthquakeData={earthquakeData}
           wildfireData={wildfireData}
           tsunamiData={tsunamiData}
+          tornadoData={tornadoData}
         />
       </div>
       <RightSidebar
@@ -57,6 +65,7 @@ const GlobePage = () => {
         wildfireData={wildfireData}
         tsunamiData={tsunamiData}
         airQuality={airQuality}
+        tornadoData={tornadoData}
       />
     </main>
   );

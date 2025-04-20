@@ -4,12 +4,14 @@ import React from 'react'
 import { Earthquake } from '@/lib/fetchEarthquakes'
 import { Wildfires } from '@/lib/fetchWildfires'
 import { TsunamiDeposit } from '@/lib/fetchTsunamis'
+import { TornadoWarning } from '@/lib/fetchTornados'
 
 interface GlobeComponentProps {
   selectedHazard: 'earthquakes' | 'wildfires' | 'tsunamis' | 'tornados';
   wildfireData: Wildfires[];
   earthquakeData: Earthquake[];
   tsunamiData: TsunamiDeposit[];
+  tornadoData: TornadoWarning[];
 }
 
 interface TsunamiArc {
@@ -25,7 +27,8 @@ const GlobeComponent: React.FC<GlobeComponentProps> = ({
   selectedHazard,
   wildfireData,
   earthquakeData,
-  tsunamiData
+  tsunamiData,
+  tornadoData
 }) => {
   // Format tsunami arcs
   const tsunamiArcs: TsunamiArc[] = tsunamiData.map(t => ({
@@ -86,6 +89,29 @@ const GlobeComponent: React.FC<GlobeComponentProps> = ({
       arcDashGap={0.2}
       arcDashAnimateTime={6000}
       arcAltitudeAutoScale={0.25}
+
+      // Tornado Warnings (Polygons)
+      htmlElementsData={selectedHazard === 'tornados' ? tornadoData.filter(d => d.coordinates) : []}
+// htmlLat={(d) => d.coordinates?.[1] ?? 0}
+// htmlLng={(d) => d.coordinates?.[0] ?? 0}
+// htmlElement={(d) => {
+//   const el = document.createElement('div');
+//   el.innerHTML = `
+//     <svg viewBox="-4 0 36 36">
+//       <path fill="currentColor" d="M14,0 C21.732,0 28,5.641 28,12.6 C28,23.963 14,36 14,36 C14,36 0,24.064 0,12.6 C0,5.641 6.268,0 14,0 Z"></path>
+//       <circle fill="black" cx="14" cy="14" r="7"></circle>
+//     </svg>`;
+//   el.style.color = 'red';
+//   el.style.width = `30px`;
+//   el.style.transition = 'opacity 250ms';
+//   el.style.pointerEvents = 'auto';
+//   el.style.cursor = 'pointer';
+//   el.title = d.headline;
+//   return el;
+// }}
+// htmlElementVisibilityModifier={(el, isVisible) => {
+//   el.style.opacity = isVisible ? '1' : '0';
+// }}
     />
   )
 }
