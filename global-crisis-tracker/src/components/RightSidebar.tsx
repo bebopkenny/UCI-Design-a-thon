@@ -11,8 +11,8 @@ interface RightSidebarProps {
   earthquakeData: Earthquake[];
   wildfireData: Wildfires[];
   tsunamiData: TsunamiDeposit[];
-  airQuality: AirQuality | null;
   tornadoData: TornadoWarning[];
+  airQuality: AirQuality | null;
 }
 
 const RightSidebar: React.FC<RightSidebarProps> = ({
@@ -90,22 +90,24 @@ const RightSidebar: React.FC<RightSidebarProps> = ({
         </>
       )}
 
-{selectedHazard === 'tornados' && tornadoData.length > 0 && (
-  <>
-    <h2 className="text-xl font-bold mb-2">Tornado Warnings</h2>
-    <p>Total Warnings: {tornadoData.length}</p>
-    <ul className="space-y-2 text-sm text-gray-300">
-      {tornadoData.slice(0, 5).map((warning, idx) => (
-        <li key={idx}>
-          <strong>{warning.areaDesc}</strong><br />
-          Effective: {new Date(warning.effective).toLocaleString()}<br />
-          Expires: {new Date(warning.expires).toLocaleString()}<br />
-          Headline: {warning.headline}
-        </li>
-      ))}
-    </ul>
-  </>
-)}
+      {selectedHazard === 'tornados' && (
+        <>
+          <h2 className="text-xl font-bold mb-2">Tornado Stats</h2>
+          <p>Total Warnings: {tornadoData.length}</p>
+          <h3 className="mt-6 font-semibold">Active Warnings</h3>
+          <ul className="text-sm space-y-2 mt-2">
+            {tornadoData.slice(0, 5).map((tornado) => (
+              <li key={tornado.id}>
+                <strong>{tornado.properties.event}</strong><br />
+                Severity: {tornado.properties.severity}<br />
+                Location: {tornado.properties.headline}<br />
+                Effective: {new Date(tornado.properties.effective).toLocaleString()}<br />
+                Expires: {new Date(tornado.properties.expires).toLocaleString()}
+              </li>
+            ))}
+          </ul>
+        </>
+      )}
     </aside>
   );
 };

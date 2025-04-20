@@ -9,6 +9,7 @@ import { fetchWildfires, Wildfires } from '@/lib/fetchWildfires';
 import { fetchAirQuality, AirQuality } from '@/lib/fetchAirQuality';
 import { fetchTsunamis, TsunamiDeposit } from '@/lib/fetchTsunamis';
 import { fetchTornados, TornadoWarning } from '@/lib/fetchTornados';
+import { fetchFloods, FloodWarning } from '@/lib/fetchFloods'
 
 const GlobePage = () => {
   const [selectedHazard, setSelectedHazard] = useState<'earthquakes' | 'wildfires' | 'tsunamis' | 'tornados'>('earthquakes');
@@ -16,35 +17,24 @@ const GlobePage = () => {
   const [earthquakeData, setEarthquakeData] = useState<Earthquake[]>([]);
   const [wildfireData, setWildfireData] = useState<Wildfires[]>([]);
   const [tsunamiData, setTsunamiData] = useState<TsunamiDeposit[]>([]);
-  const [airQuality, setAirQuality] = useState<AirQuality | null>(null);
   const [tornadoData, setTornadoData] = useState<TornadoWarning[]>([]);
-
-  const loadEarthquakes = () => fetchEarth().then(setEarthquakeData);
-  const loadWildfires = () => fetchWildfires().then(setWildfireData);
-  const loadTsunamis = () => fetchTsunamis().then(setTsunamiData);
-  const loadTornados = () => fetchTornados().then(setTornadoData);
-  const loadAirQuality = () => fetchAirQuality(36.7783, -119.4179).then(setAirQuality);
+  const [airQuality, setAirQuality] = useState<AirQuality | null>(null);
+  const [floodData, setFloodData] = useState<FloodWarning[]>([]);
 
   useEffect(() => {
-    loadEarthquakes();
-    loadWildfires();
-    loadAirQuality();
-    loadTsunamis();
-    loadTornados();
+    fetchEarth().then(setEarthquakeData);
+    fetchWildfires().then(setWildfireData);
+    fetchAirQuality(36.7783, -119.4179).then(setAirQuality);
+    fetchTsunamis().then(setTsunamiData);
+    fetchTornados().then(setTornadoData);
+    fetchFloods().then(setFloodData);
   }, []);
 
   useEffect(() => {
-    if (selectedHazard === 'earthquakes') {
-      loadEarthquakes();
-    } else if (selectedHazard === 'wildfires') {
-      loadWildfires();
-      loadAirQuality();
-    } else if (selectedHazard === 'tsunamis') {
-      loadTsunamis();
-    }
-      else if (selectedHazard === 'tornados') {
-        loadTornados();
-      }
+    if (selectedHazard === 'earthquakes') fetchEarth().then(setEarthquakeData);
+    if (selectedHazard === 'wildfires') fetchWildfires().then(setWildfireData);
+    if (selectedHazard === 'tsunamis') fetchTsunamis().then(setTsunamiData);
+    if (selectedHazard === 'tornados') fetchTornados().then(setTornadoData);
   }, [selectedHazard]);
 
   return (
@@ -64,8 +54,8 @@ const GlobePage = () => {
         earthquakeData={earthquakeData}
         wildfireData={wildfireData}
         tsunamiData={tsunamiData}
-        airQuality={airQuality}
         tornadoData={tornadoData}
+        airQuality={airQuality}
       />
     </main>
   );

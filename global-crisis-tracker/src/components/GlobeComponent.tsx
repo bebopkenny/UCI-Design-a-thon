@@ -23,22 +23,41 @@ interface TsunamiArc {
   color: [string, string];
 }
 
+interface TornadoPoint {
+  lat: number;
+  lng: number;
+  label: string;
+  color: string;
+  altitude: number;
+}
+
+
 const GlobeComponent: React.FC<GlobeComponentProps> = ({
   selectedHazard,
   wildfireData,
   earthquakeData,
   tsunamiData,
-  tornadoData
+  tornadoData 
 }) => {
   // Format tsunami arcs
   const tsunamiArcs: TsunamiArc[] = tsunamiData.map(t => ({
     startLat: t.lat,
     startLng: t.lon,
-    endLat: 0, // dummy center point
+    endLat: 0, 
     endLng: 0,
     label: `${t.location}, ${t.country} (${t.year})`,
     color: ['#00ffff', '#0077ff']
   }));
+
+  // Format tornado points
+  const tornadoPoints: TornadoPoint[] = tornadoData.map(t => ({
+    lat: t.geometry.coordinates[1],
+    lng: t.geometry.coordinates[0],
+    label: `${t.properties.event} | ${t.properties.headline}`,
+    color: '#ff0000', // Red for tornado warnings
+    altitude: 0.2      // You can tweak this for visual height
+  }));
+  
 
   return (
     <Globe
@@ -90,28 +109,13 @@ const GlobeComponent: React.FC<GlobeComponentProps> = ({
       arcDashAnimateTime={6000}
       arcAltitudeAutoScale={0.25}
 
-      // Tornado Warnings (Polygons)
-      htmlElementsData={selectedHazard === 'tornados' ? tornadoData.filter(d => d.coordinates) : []}
-// htmlLat={(d) => d.coordinates?.[1] ?? 0}
-// htmlLng={(d) => d.coordinates?.[0] ?? 0}
-// htmlElement={(d) => {
-//   const el = document.createElement('div');
-//   el.innerHTML = `
-//     <svg viewBox="-4 0 36 36">
-//       <path fill="currentColor" d="M14,0 C21.732,0 28,5.641 28,12.6 C28,23.963 14,36 14,36 C14,36 0,24.064 0,12.6 C0,5.641 6.268,0 14,0 Z"></path>
-//       <circle fill="black" cx="14" cy="14" r="7"></circle>
-//     </svg>`;
-//   el.style.color = 'red';
-//   el.style.width = `30px`;
-//   el.style.transition = 'opacity 250ms';
-//   el.style.pointerEvents = 'auto';
-//   el.style.cursor = 'pointer';
-//   el.title = d.headline;
-//   return el;
-// }}
-// htmlElementVisibilityModifier={(el, isVisible) => {
-//   el.style.opacity = isVisible ? '1' : '0';
-// }}
+      pointsData={selectedHazard === 'tornados' ? tornadoPoints : []}
+      pointLat={(d) => (d as TornadoPoint).lat}
+      pointLng={(d) => (d as TornadoPoint).lng}
+      pointLabel={(d) => (d as TornadoPoint).label}
+      pointColor={(d) => (d as TornadoPoint).color}
+      pointAltitude={(d) => (d as TornadoPoint).altitude}
+      pointRadius={0.3}
     />
   )
 }
