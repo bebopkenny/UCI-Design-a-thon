@@ -1,36 +1,34 @@
 export type TsunamiDeposit = {
     id: number;
+    year: number;
     location: string;
     country: string;
     lat: number;
     lon: number;
-    year: number;
     description: string;
   };
   
   export async function fetchTsunamis(): Promise<TsunamiDeposit[]> {
-    const url = 'https://www.ngdc.noaa.gov/hazel/hazard-service/api/v1/tsunamis/deposits';
-  
     try {
-      const res = await fetch(url);
+      const res = await fetch('https://www.ngdc.noaa.gov/hazel/hazard-service/api/v1/tsunamis/deposits');
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
   
       const json = await res.json();
   
       const normalized: TsunamiDeposit[] = (json.items || []).map((item: any) => ({
         id: item.id,
-        location: item.locationName,
-        country: item.country,
+        year: item.yearBegin ?? item.yearEnd ?? 0,
+        location: item.locationName || 'Unknown',
+        country: item.country || 'Unknown',
         lat: item.latitude,
         lon: item.longitude,
-        year: parseInt(item.yearBegin || item.year || '0', 10),
-        description: item.description || 'No description',
+        description: item.description || 'No description available'
       }));
   
-      console.log('[TSUNAMI DEPOSITS]', normalized);
       return normalized;
     } catch (err) {
       console.error('[TSUNAMI API ERROR]', err);
       return [];
     }
-  }  
+  }
+  

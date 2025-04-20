@@ -3,11 +3,13 @@ import Globe from 'react-globe.gl'
 import React from 'react'
 import { Earthquake } from '@/lib/fetchEarthquakes'
 import { Wildfires } from '@/lib/fetchWildfires'
+import { TsunamiDeposit } from '@/lib/fetchTsunamis'
 
 interface GlobeComponentProps {
   selectedHazard: 'earthquakes' | 'wildfires' | 'tsunamis' | 'tornados';
   wildfireData: Wildfires[];
   earthquakeData: Earthquake[];
+  tsunamiData: TsunamiDeposit[];
 }
 
 const GlobeComponent: React.FC<GlobeComponentProps> = ({
@@ -51,6 +53,9 @@ const GlobeComponent: React.FC<GlobeComponentProps> = ({
       pathStroke={1.5}
       pathColor={() => '#ff4500'}
       pathDashAnimateTime={2000}
+
+      // Tsunamis
+      
     />
   )
 }
