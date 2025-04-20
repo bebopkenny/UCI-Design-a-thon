@@ -1,39 +1,36 @@
-export type TsunamiRunup = {
+export type TsunamiDeposit = {
     id: number;
+    location: string;
+    country: string;
     lat: number;
     lon: number;
-    locationName: string;
-    country: string;
-    maxHeight: number | null;
-    cause: string;
-    eventDate: string;
+    year: number;
+    description: string;
   };
   
-  export async function fetchTsunamis(): Promise<TsunamiRunup[]> {
-    const url = 'https://www.ngdc.noaa.gov/hazard-service/api/v1/tsunamis/runups';
+  export async function fetchTsunamis(): Promise<TsunamiDeposit[]> {
+    const url = 'https://www.ngdc.noaa.gov/hazel/hazard-service/api/v1/tsunamis/deposits';
   
     try {
       const res = await fetch(url);
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
   
       const json = await res.json();
-
-      const normalized: TsunamiRunup[] = (json.data || []).map((item: any) => ({
+  
+      const normalized: TsunamiDeposit[] = (json.items || []).map((item: any) => ({
         id: item.id,
+        location: item.locationName,
+        country: item.country,
         lat: item.latitude,
         lon: item.longitude,
-        locationName: item.locationName,
-        country: item.country,
-        maxHeight: item.maxWaterHeight ?? null,
-        cause: item.causeName,
-        eventDate: item.year ? `${item.year}-${item.month || '??'}-${item.day || '??'}` : 'Unknown',
+        year: parseInt(item.yearBegin || item.year || '0', 10),
+        description: item.description || 'No description',
       }));
-
-      console.log('[TSUNAMI DATA]', normalized)
   
+      console.log('[TSUNAMI DEPOSITS]', normalized);
       return normalized;
     } catch (err) {
       console.error('[TSUNAMI API ERROR]', err);
       return [];
     }
-  }
+  }  

@@ -3,13 +3,13 @@ import React from 'react';
 import { Earthquake } from '@/lib/fetchEarthquakes';
 import { Wildfires } from '@/lib/fetchWildfires';
 import { AirQuality } from '@/lib/fetchAirQuality';
-import { TsunamiRunup } from '@/lib/fetchTsunamis';
+import { TsunamiDeposit } from '@/lib/fetchTsunamis';
 
 interface RightSidebarProps {
   selectedHazard: 'earthquakes' | 'wildfires' | 'tsunamis' | 'tornados';
   earthquakeData: Earthquake[];
   wildfireData: Wildfires[];
-  tsunamiData: TsunamiRunup[];
+  tsunamiData: TsunamiDeposit[];
   airQuality: AirQuality | null;
 }
 
@@ -72,15 +72,17 @@ const RightSidebar: React.FC<RightSidebarProps> = ({
       {selectedHazard === 'tsunamis' && (
         <>
             <h2 className="text-xl font-bold mb-2">Tsunami Stats</h2>
-            <p>Total Runup Records: {tsunamiData.length}</p>
-            <h3 className="mt-6">Recent Tsunami Runups</h3>
+            <p>Total Deposits: {tsunamiData.length}</p>
+            <h3 className="mt-6">Recent Tsunami Deposits</h3>
             <ul className="space-y-2 text-sm">
             {tsunamiData.slice(0, 5).map((tsunami) => (
                 <li key={tsunami.id}>
-                <strong>{tsunami.locationName}, {tsunami.country}</strong><br />
-                Max Height: {tsunami.maxHeight ?? 'Unknown'} m<br />
-                Cause: {tsunami.cause}<br />
-                Date: {tsunami.eventDate}
+                <strong>{tsunami.location}, {tsunami.country}</strong><br />
+                Year: {tsunami.year}<br />
+                Lat: {tsunami.lat}, Lon: {tsunami.lon}<br />
+                Desc: {tsunami.description.length > 80
+                    ? tsunami.description.slice(0, 80) + '...'
+                    : tsunami.description}
                 </li>
             ))}
             </ul>
