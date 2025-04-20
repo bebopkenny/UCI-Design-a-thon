@@ -6,16 +6,19 @@ import LeftSidebar from '@/components/LeftSidebar';
 import { fetchEarth, Earthquake } from '@/lib/fetchEarthquakes';
 import { fetchWildfires, Wildfires } from '@/lib/fetchWildfires';
 import { fetchAirQuality, AirQuality } from '@/lib/fetchAirQuality';
+import { fetchTsunamis, TsunamiRunup } from '@/lib/fetchTsunamis';
 
 const GlobePage = () => {
   const [selectedHazard, setSelectedHazard] = useState<'earthquakes' | 'wildfires' | 'tsunamis' | 'tornados'>('earthquakes');
 
   const [earthquakeData, setEarthquakeData] = useState<Earthquake[]>([]);
   const [wildfireData, setWildfireData] = useState<Wildfires[]>([]);
+  const [tsunamiData, setTsunamiData] = useState<TsunamiRunup[]>([]);
   const [airQuality, setAirQuality] = useState<AirQuality | null>(null);
 
   const loadEarthquakes = () => fetchEarth().then(setEarthquakeData);
   const loadWildfires = () => fetchWildfires().then(setWildfireData);
+  const loadTsunamis = () => fetchTsunamis().then(setTsunamiData)
   const loadAirQuality = () => fetchAirQuality(36.7783, -119.4179).then(setAirQuality);
 
   useEffect(() => {
@@ -33,6 +36,9 @@ const GlobePage = () => {
       loadWildfires();
       loadAirQuality();
     }
+    if (selectedHazard === 'tsunamis') {
+      fetchTsunamis().then(setTsunamiData);
+    }
   }, [selectedHazard]);
 
   return (
@@ -49,6 +55,7 @@ const GlobePage = () => {
         selectedHazard={selectedHazard}
         earthquakeData={earthquakeData}
         wildfireData={wildfireData}
+        tsunamiData={tsunamiData}
         airQuality={airQuality}
       />
     </main>
