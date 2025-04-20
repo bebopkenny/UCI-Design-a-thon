@@ -54,9 +54,9 @@ const GlobeComponent: React.FC<GlobeComponentProps> = ({
       ringLng={(d) => (d as Earthquake).geometry.coordinates[0]}
       ringAltitude={0}
       ringColor={() => (t: number) => `rgba(255,100,50,${Math.sqrt(1 - t)})`}
-      ringMaxRadius={(d) => (d as Earthquake).properties.mag * 5}
-      ringPropagationSpeed={1}
-      ringRepeatPeriod={700}
+      ringMaxRadius={(d) => (d as Earthquake).properties.mag * 2.5} 
+      ringPropagationSpeed={0.8} 
+      ringRepeatPeriod={1500} 
 
       // Wildfires (paths)
       pathsData={selectedHazard === 'wildfires' ? wildfireData.map(fire => ({
