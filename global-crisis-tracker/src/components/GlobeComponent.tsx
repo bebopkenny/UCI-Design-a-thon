@@ -28,12 +28,14 @@ const GlobeComponent: React.FC<GlobeComponentProps> = ({
   tsunamiData
 }) => {
   // Format tsunami arcs
-  const tsunamiArcs: TsunamiArc[] = tsunamiData.map(t => ({
+  const tsunamiArcs = tsunamiData
+  .filter((t) => typeof t.lat === 'number' && typeof t.lon === 'number')
+  .map((t) => ({
     startLat: t.lat,
     startLng: t.lon,
-    endLat: 0, // dummy center point
+    endLat: 0, // placeholder, can tweak later
     endLng: 0,
-    label: `${t.location}, ${t.country} (${t.year})`,
+    label: `${t.location}, ${t.country}`,
     color: ['#00ffff', '#0077ff']
   }));
 
