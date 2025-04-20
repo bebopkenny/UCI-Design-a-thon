@@ -18,7 +18,7 @@ export default function Home() {
           view === 'main' ? 'opacity-100' : 'opacity-0 pointer-events-none'
         }`}
       >
-        <h1 className="text-white text-4xl font-bold text-center">Global Crisis Tracker</h1>
+        <h1 className="text-white text-4xl font-bold text-center">Global Hazard Tracker</h1>
         <div className="mt-6 flex flex-col sm:flex-row gap-4 justify-center items-center">
           <a
             href="/globe"
