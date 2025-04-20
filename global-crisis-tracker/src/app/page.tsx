@@ -8,6 +8,10 @@ export default function Home() {
 
   return (
     <>
+      <div className="absolute top-0 left-0 w-full h-full z-[-10]">
+        <EarthModel />
+      </div>
+
       <ParticlesBackground />
       <div
         className={`absolute top-0 left-0 w-full h-full flex flex-col gap-4 items-center justify-center transition-opacity duration-500 ${
@@ -97,7 +101,6 @@ export default function Home() {
           Back to Main
         </button>
       </div>
-      
     </>
   );
 }
