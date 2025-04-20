@@ -4,12 +4,14 @@ import React from 'react'
 import { Earthquake } from '@/lib/fetchEarthquakes'
 import { Wildfires } from '@/lib/fetchWildfires'
 import { TsunamiDeposit } from '@/lib/fetchTsunamis'
+import { TornadoWarning } from '@/lib/fetchTornados'
 
 interface GlobeComponentProps {
   selectedHazard: 'earthquakes' | 'wildfires' | 'tsunamis' | 'tornados';
   wildfireData: Wildfires[];
   earthquakeData: Earthquake[];
   tsunamiData: TsunamiDeposit[];
+  tornadoData: TornadoWarning[];
 }
 
 interface TsunamiArc {
@@ -21,20 +23,34 @@ interface TsunamiArc {
   color: [string, string];
 }
 
+interface TornadoPoint {
+  lat: number;
+  lng: number;
+  label: string;
+}
+
 const GlobeComponent: React.FC<GlobeComponentProps> = ({
   selectedHazard,
   wildfireData,
   earthquakeData,
-  tsunamiData
+  tsunamiData,
+  tornadoData 
 }) => {
   // Format tsunami arcs
   const tsunamiArcs: TsunamiArc[] = tsunamiData.map(t => ({
     startLat: t.lat,
     startLng: t.lon,
-    endLat: 0, // dummy center point
+    endLat: 0, 
     endLng: 0,
     label: `${t.location}, ${t.country} (${t.year})`,
     color: ['#00ffff', '#0077ff']
+  }));
+
+  // Format tornado points
+  const tornadoPoints: TornadoPoint[] = tornadoData.map(t => ({
+    lat: t.geometry.coordinates[1],
+    lng: t.geometry.coordinates[0],
+    label: `${t.properties.event} | ${t.properties.headline}`
   }));
 
   return (
@@ -86,6 +102,19 @@ const GlobeComponent: React.FC<GlobeComponentProps> = ({
       arcDashGap={0.2}
       arcDashAnimateTime={6000}
       arcAltitudeAutoScale={0.25}
+
+      // Tornadoes (HTML labels)
+      // htmlElementsData={selectedHazard === 'tornados' ? tornadoPoints : []}
+      // htmlLat={(d: any) => d.lat}
+      // htmlLng={(d: any) => d.lng}
+      // htmlElement={(d: any) => {
+      //   const el = document.createElement('div');
+      //   el.innerHTML = '🌪️';
+      //   el.style.color = 'red';
+      //   el.style.fontSize = '24px';
+      //   el.title = d.label;
+      //   return el;
+      // }}
     />
   )
 }

@@ -4,6 +4,7 @@ import React, { Suspense } from 'react';
 import { Canvas } from '@react-three/fiber';
 import { OrbitControls, useGLTF } from '@react-three/drei';
 
+
 const Earth = () => {
   const gltf = useGLTF('/earth.glb'); // Make sure this path is correct
   return <primitive

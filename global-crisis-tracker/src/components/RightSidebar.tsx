@@ -4,12 +4,14 @@ import { Earthquake } from '@/lib/fetchEarthquakes';
 import { Wildfires } from '@/lib/fetchWildfires';
 import { AirQuality } from '@/lib/fetchAirQuality';
 import { TsunamiDeposit } from '@/lib/fetchTsunamis';
+import { TornadoWarning } from '@/lib/fetchTornados';
 
 interface RightSidebarProps {
   selectedHazard: 'earthquakes' | 'wildfires' | 'tsunamis' | 'tornados';
   earthquakeData: Earthquake[];
   wildfireData: Wildfires[];
   tsunamiData: TsunamiDeposit[];
+  tornadoData: TornadoWarning[];
   airQuality: AirQuality | null;
 }
 
@@ -18,7 +20,8 @@ const RightSidebar: React.FC<RightSidebarProps> = ({
   earthquakeData,
   wildfireData,
   tsunamiData,
-  airQuality
+  airQuality,
+  tornadoData
 }) => {
   return (
     <aside className="w-[300px] h-screen bg-transparent text-white p-6 overflow-y-auto font-[var(--font-geist-sans)]">
@@ -81,6 +84,24 @@ const RightSidebar: React.FC<RightSidebarProps> = ({
                 Year: {tsunami.year > 0 ? tsunami.year : 'Unknown'}<br />
                 Lat: {tsunami.lat}, Lon: {tsunami.lon}<br />
                 Desc: {tsunami.description.slice(0, 80)}...
+              </li>
+            ))}
+          </ul>
+        </>
+      )}
+      {selectedHazard === 'tornados' && (
+        <>
+          <h2 className="text-xl font-bold mb-2">Tornado Stats</h2>
+          <p>Total Warnings: {tornadoData.length}</p>
+          <h3 className="mt-6 font-semibold">Active Warnings</h3>
+          <ul className="text-sm space-y-2 mt-2">
+            {tornadoData.slice(0, 5).map((tornado) => (
+              <li key={tornado.id}>
+                <strong>{tornado.properties.event}</strong><br />
+                Severity: {tornado.properties.severity}<br />
+                Location: {tornado.properties.headline}<br />
+                Effective: {new Date(tornado.properties.effective).toLocaleString()}<br />
+                Expires: {new Date(tornado.properties.expires).toLocaleString()}
               </li>
             ))}
           </ul>
