@@ -5,16 +5,25 @@ import RightSidebar from '@/components/RightSidebar'
 import LeftSidebar from '@/components/LeftSidebar'
 import { fetchEarth, Earthquake } from '@/lib/fetchEarthquakes'
 import { fetchWildfires, Wildfires } from '@/lib/fetchWildfires'
+import { fetchAirQuality, AirQuality } from '@/lib/fetchAirQuality'
 
 const GlobePage = () => {
   const [selectedHazard, setSelectedHazard] = useState<'earthquakes' | 'wildfires' | 'tsunamis' | 'tornados'>('earthquakes')
+
   const [earthquakeData, setEarthquakeData] = useState<Earthquake[]>([])
   const [wildfireData, setWildfireData] = useState<Wildfires[]>([])
+  const [airQuality, setAirQuality] = useState<AirQuality | null>(null)
 
   useEffect(() => {
-    fetchEarth().then(setEarthquakeData)
-    fetchWildfires().then(setWildfireData)
-  }, [])
+    if (selectedHazard === 'earthquakes') {
+      fetchEarth().then(setEarthquakeData)
+    }
+
+    if (selectedHazard === 'wildfires') {
+      fetchWildfires().then(setWildfireData)
+      fetchAirQuality(36.7783, -119.4179).then(setAirQuality)
+    }
+  }, [selectedHazard])
 
   return (
     <main className="flex h-screen w-screen overflow-hidden bg-black">
@@ -26,7 +35,12 @@ const GlobePage = () => {
           wildfireData={wildfireData}
         />
       </div>
-      <RightSidebar selectedHazard={selectedHazard} />
+      <RightSidebar
+        selectedHazard={selectedHazard}
+        earthquakeData={earthquakeData}
+        wildfireData={wildfireData}
+        airQuality={airQuality}
+      />
     </main>
   )
 }
