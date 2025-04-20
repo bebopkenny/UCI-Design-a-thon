@@ -12,11 +12,31 @@ interface GlobeComponentProps {
   tsunamiData: TsunamiDeposit[];
 }
 
+interface TsunamiArc {
+  startLat: number;
+  startLng: number;
+  endLat: number;
+  endLng: number;
+  label: string;
+  color: [string, string];
+}
+
 const GlobeComponent: React.FC<GlobeComponentProps> = ({
   selectedHazard,
   wildfireData,
-  earthquakeData
+  earthquakeData,
+  tsunamiData
 }) => {
+  // Format tsunami arcs
+  const tsunamiArcs: TsunamiArc[] = tsunamiData.map(t => ({
+    startLat: t.lat,
+    startLng: t.lon,
+    endLat: 0, // dummy center point
+    endLng: 0,
+    label: `${t.location}, ${t.country} (${t.year})`,
+    color: ['#00ffff', '#0077ff']
+  }));
+
   return (
     <Globe
       key={selectedHazard}
@@ -54,8 +74,18 @@ const GlobeComponent: React.FC<GlobeComponentProps> = ({
       pathColor={() => '#ff4500'}
       pathDashAnimateTime={2000}
 
-      // Tsunamis
-      
+      // Tsunami Arcs
+      arcsData={selectedHazard === 'tsunamis' ? tsunamiArcs : []}
+      arcLabel={(d: object) => (d as TsunamiArc).label}
+      arcStartLat={(d: object) => (d as TsunamiArc).startLat}
+      arcStartLng={(d: object) => (d as TsunamiArc).startLng}
+      arcEndLat={(d: object) => (d as TsunamiArc).endLat}
+      arcEndLng={(d: object) => (d as TsunamiArc).endLng}
+      arcColor={(d: object) => (d as TsunamiArc).color}
+      arcDashLength={0.4}
+      arcDashGap={0.2}
+      arcDashAnimateTime={6000}
+      arcAltitudeAutoScale={0.25}
     />
   )
 }

@@ -1,6 +1,7 @@
 'use client';
 import React, { useEffect, useState } from 'react';
-import GlobeComponent from '@/components/GlobeComponent';
+import dynamic from 'next/dynamic'
+const GlobeComponent = dynamic(() => import('@/components/GlobeComponent'), { ssr: false });
 import RightSidebar from '@/components/RightSidebar';
 import LeftSidebar from '@/components/LeftSidebar';
 import { fetchEarth, Earthquake } from '@/lib/fetchEarthquakes';
