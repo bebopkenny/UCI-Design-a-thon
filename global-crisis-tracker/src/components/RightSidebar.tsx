@@ -114,7 +114,18 @@ const RightSidebar: React.FC<RightSidebarProps> = ({
 
       {selectedHazard === 'floods' && (
         <>
-        
+          <h2 className="text-xl font-bold mb-2">Flood Stats</h2>
+          <p>Total Warnings: {floodData.length}</p>
+          <h3>Active Warnings</h3>
+          <ul className="text-sm space-y-2 mt-2">
+            {floodData.map((flood) => (
+              <li key={flood.id}>
+                <strong>{flood.geometry.coordinates}</strong><br/>
+                Event: {flood.properties.event}
+
+              </li>
+            ))}
+          </ul>
         </>
       )}
     </aside>
