@@ -2,8 +2,8 @@
 import React, { useState } from 'react'
 
 interface Props {
-  selected: 'earthquakes' | 'wildfires' | 'tsunamis' | 'tornados';
-  setSelected: (hazard: 'earthquakes' | 'wildfires' | 'tsunamis' | 'tornados') => void;
+  selected: 'earthquakes' | 'wildfires' | 'tsunamis' | 'tornados' | 'floods';
+  setSelected: (hazard: 'earthquakes' | 'wildfires' | 'tsunamis' | 'tornados' | 'floods') => void;
 }
 
 const LeftSidebar: React.FC<Props> = ({ selected, setSelected }) => {
@@ -15,7 +15,7 @@ const LeftSidebar: React.FC<Props> = ({ selected, setSelected }) => {
     <aside className="w-[250px] h-screen bg-transparent text-white p-6 border-r border-white font-sans">
       <h2 className="text-2xl font-bold mb-6 text-center">Natural Hazards</h2>
       <form className="flex flex-col space-y-4">
-        {['earthquakes', 'wildfires', 'tsunamis', 'tornados'].map((hazard) => (
+        {['earthquakes', 'wildfires', 'tsunamis', 'tornados', 'floods'].map((hazard) => (
           <label
             key={hazard}
             className={`capitalize flex items-center gap-2 cursor-pointer transition hover:text-gray-300 ${

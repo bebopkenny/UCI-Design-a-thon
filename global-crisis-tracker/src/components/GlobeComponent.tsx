@@ -5,13 +5,15 @@ import { Earthquake } from '@/lib/fetchEarthquakes'
 import { Wildfires } from '@/lib/fetchWildfires'
 import { TsunamiDeposit } from '@/lib/fetchTsunamis'
 import { TornadoWarning } from '@/lib/fetchTornados'
+import { FloodWarning } from '@/lib/fetchFloods'
 
 interface GlobeComponentProps {
-  selectedHazard: 'earthquakes' | 'wildfires' | 'tsunamis' | 'tornados';
+  selectedHazard: 'earthquakes' | 'wildfires' | 'tsunamis' | 'tornados' | 'floods';
   wildfireData: Wildfires[];
   earthquakeData: Earthquake[];
   tsunamiData: TsunamiDeposit[];
   tornadoData: TornadoWarning[];
+  floodData: FloodWarning[];
 }
 
 interface TsunamiArc {
@@ -37,7 +39,8 @@ const GlobeComponent: React.FC<GlobeComponentProps> = ({
   wildfireData,
   earthquakeData,
   tsunamiData,
-  tornadoData 
+  tornadoData,
+  floodData
 }) => {
   // Format tsunami arcs
   const tsunamiArcs: TsunamiArc[] = tsunamiData.map(t => ({

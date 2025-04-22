@@ -5,14 +5,16 @@ import { Wildfires } from '@/lib/fetchWildfires';
 import { AirQuality } from '@/lib/fetchAirQuality';
 import { TsunamiDeposit } from '@/lib/fetchTsunamis';
 import { TornadoWarning } from '@/lib/fetchTornados';
+import { FloodWarning } from '@/lib/fetchFloods';
 
 interface RightSidebarProps {
-  selectedHazard: 'earthquakes' | 'wildfires' | 'tsunamis' | 'tornados';
+  selectedHazard: 'earthquakes' | 'wildfires' | 'tsunamis' | 'tornados' | 'floods';
   earthquakeData: Earthquake[];
   wildfireData: Wildfires[];
   tsunamiData: TsunamiDeposit[];
   tornadoData: TornadoWarning[];
   airQuality: AirQuality | null;
+  floodData: FloodWarning[];
 }
 
 const RightSidebar: React.FC<RightSidebarProps> = ({
@@ -21,7 +23,8 @@ const RightSidebar: React.FC<RightSidebarProps> = ({
   wildfireData,
   tsunamiData,
   airQuality,
-  tornadoData
+  tornadoData,
+  floodData
 }) => {
   return (
     <aside className="w-[300px] h-screen bg-black bg-opacity-60 text-white p-6 overflow-y-auto border-l border-white font-sans">
@@ -106,6 +109,12 @@ const RightSidebar: React.FC<RightSidebarProps> = ({
               </li>
             ))}
           </ul>
+        </>
+      )}
+
+      {selectedHazard === 'floods' && (
+        <>
+        
         </>
       )}
     </aside>

@@ -2,6 +2,7 @@
 import React, { useState } from 'react';
 import ParticlesBackground from '@/components/ParticlesBackground';
 import EarthModel from '@/components/EarthModel';
+import Link from 'next/link';
 
 export default function Home() {
   const [view, setView] = useState<'main' | 'how' | 'resources'>('main');
@@ -20,12 +21,13 @@ export default function Home() {
       >
         <h1 className="text-white text-4xl font-bold text-center">Global Hazard Tracker</h1>
         <div className="mt-6 flex flex-col sm:flex-row gap-4 justify-center items-center">
-          <a
-            href="/globe"
-            className="bg-white text-black px-6 py-2 rounded-full text-sm font-semibold hover:bg-gray-200 transition"
-          >
-            View Globe
-          </a>
+        <Link
+          href="/globe"
+          className="bg-white text-black px-6 py-2 rounded-full text-sm font-semibold hover:bg-gray-200 transition"
+        >
+          View Globe
+        </Link>
+
           <button
             onClick={() => setView('how')}
             className="border border-white px-6 py-2 rounded-full text-sm font-semibold text-white hover:bg-white hover:text-black transition"

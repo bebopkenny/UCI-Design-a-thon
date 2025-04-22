@@ -12,7 +12,7 @@ import { fetchTornados, TornadoWarning } from '@/lib/fetchTornados';
 import { fetchFloods, FloodWarning } from '@/lib/fetchFloods'
 
 const GlobePage = () => {
-  const [selectedHazard, setSelectedHazard] = useState<'earthquakes' | 'wildfires' | 'tsunamis' | 'tornados'>('earthquakes');
+  const [selectedHazard, setSelectedHazard] = useState<'earthquakes' | 'wildfires' | 'tsunamis' | 'tornados' | 'floods'>('earthquakes');
 
   const [earthquakeData, setEarthquakeData] = useState<Earthquake[]>([]);
   const [wildfireData, setWildfireData] = useState<Wildfires[]>([]);
@@ -35,6 +35,7 @@ const GlobePage = () => {
     if (selectedHazard === 'wildfires') fetchWildfires().then(setWildfireData);
     if (selectedHazard === 'tsunamis') fetchTsunamis().then(setTsunamiData);
     if (selectedHazard === 'tornados') fetchTornados().then(setTornadoData);
+    if (selectedHazard === 'floods') fetchFloods().then(setFloodData);
   }, [selectedHazard]);
 
   return (
@@ -47,6 +48,7 @@ const GlobePage = () => {
           wildfireData={wildfireData}
           tsunamiData={tsunamiData}
           tornadoData={tornadoData}
+          floodData={floodData}
         />
       </div>
       <RightSidebar
@@ -56,6 +58,7 @@ const GlobePage = () => {
         tsunamiData={tsunamiData}
         tornadoData={tornadoData}
         airQuality={airQuality}
+        floodData={floodData}
       />
     </main>
   );
