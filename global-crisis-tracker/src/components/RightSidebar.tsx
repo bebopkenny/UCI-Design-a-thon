@@ -5,7 +5,7 @@ import { Wildfires } from '@/lib/fetchWildfires';
 import { AirQuality } from '@/lib/fetchAirQuality';
 import { TsunamiDeposit } from '@/lib/fetchTsunamis';
 import { TornadoWarning } from '@/lib/fetchTornados';
-import { FloodWarning } from '@/lib/fetchFloods';
+import { fetchFloods, FloodWarning } from '@/lib/fetchFloods';
 
 interface RightSidebarProps {
   selectedHazard: 'earthquakes' | 'wildfires' | 'tsunamis' | 'tornados' | 'floods';
@@ -121,8 +121,15 @@ const RightSidebar: React.FC<RightSidebarProps> = ({
             {floodData.map((flood) => (
               <li key={flood.id}>
                 <strong>{flood.geometry.coordinates}</strong><br/>
-                Event: {flood.properties.event}
-
+                Event: {flood.properties.event}<br />
+                Serverity: {flood.properties.severity}<br />
+                Certainty: {flood.properties.certainty}<br />
+                Urgency: {flood.properties.urgency}<br />
+                Headline: {flood.properties.headline}<br />
+                Description: {flood.properties.description}<br />
+                Effective: {flood.properties.effective}<br />
+                Expires: {flood.properties.expires}<br />
+                Area Description: {flood.properties.areaDesc}<br />
               </li>
             ))}
           </ul>

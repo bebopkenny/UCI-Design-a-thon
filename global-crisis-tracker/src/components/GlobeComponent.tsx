@@ -60,6 +60,8 @@ const GlobeComponent: React.FC<GlobeComponentProps> = ({
     color: '#ff0000', // Red for tornado warnings
     altitude: 0.2      // You can tweak this for visual height
   }));
+
+  
   
 
   return (
@@ -112,6 +114,7 @@ const GlobeComponent: React.FC<GlobeComponentProps> = ({
       arcDashAnimateTime={6000}
       arcAltitudeAutoScale={0.25}
 
+      // Tornado Points
       pointsData={selectedHazard === 'tornados' ? tornadoPoints : []}
       pointLat={(d) => (d as TornadoPoint).lat}
       pointLng={(d) => (d as TornadoPoint).lng}
